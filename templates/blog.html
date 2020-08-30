@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <!-- Latest Posts -->
+        <main class="posts-listing col-lg-8"> 
+          <div class="container">
+            <div class="row" >
+            {% comment %} POST {% endcomment %}
+              {% for post in paginated_queryset %}
+              <div class="post col-xl-6">
+                <div class="post-thumbnail"><a href="{% url 'postpage' post.id %}">
+                <img style="height:250px;width:100%;"  src="{{post.postImage.url}}" alt="..." class="img-fluid"></a></div>
+                <div class="post-details">  
+                  <div class="post-meta d-flex justify-content-between">
+                    <div class="date meta-last">{{post.timestamp|timesince}}</div>
+                    <div class="category">
+                    {% for cat in post.category.all  %}
+                    <a href="#">{{cat}}</a>
+                    {% endfor %}
+                    </div>
+                  </div><a href="{% url 'postpage' post.id %}">
+                    <h3 class="h4">{{post.title}}</h3></a>
+                  <p class="text-muted">{{post.overview|truncatewords:20 }}</p>
+                  <footer class="post-footer d-flex align-items-center"><a href="{% url 'postpage' post.id %}" class="author d-flex align-items-center flex-wrap">
+                      <div class="avatar"><img  src="{{post.author.profile_picture.url}}" alt="..." class="img-fluid"></div>
+                      <div class="title"><span>{{post.author.user}}</span></div></a>
+                    <div class="date"><i class="icon-clock"></i> {{post.timestamp |timesince }}</div>
+                    <div class="comments meta-last"><i class="icon-comment"></i>{{post.get_comments.count}}</div>
+                    
+                  </footer>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+          </div>
+           <!-- Pagination -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination pagination-template d-flex justify-content-center">
+                {% if paginated_queryset.has_previous %}
+                <li class="page-item"><a href="?{{page_request_var}}={{paginated_queryset.previous_page_number}}" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+                {% endif %}
+                                  
+                {% for i in paginated_queryset.paginator.page_range %}
+                  <li class="page-item"><a href="#" class="page-link">{{i}}</a></li>
+                {% endfor %}
+
+                {% if paginated_queryset.has_next %}
+                <li class="page-item"><a href="?{{page_request_var}}={{paginated_queryset.next_page_number}}" class="page-link"> 
+                <i class="fa fa-angle-right"></i></a></li>
+                {% endif %}
+              </ul>
+            </nav>
+        </main>
+        {% include 'aside.html' %}
+      </div>
+    </div>
+{% endblock content %}

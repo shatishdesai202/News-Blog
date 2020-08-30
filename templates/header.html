@@ -1,0 +1,163 @@
+{% load static %}
+<header class="header">
+      <!-- Main Navbar-->
+      <nav class="navbar navbar-expand-lg">
+        <div class="search-area">
+          <div class="search-area-inner d-flex align-items-center justify-content-center">
+            <div class="close-btn"><i class="icon-close"></i></div>
+            <div class="row d-flex justify-content-center">
+              <div class="col-md-8">
+                <form action="#">
+                  <div class="form-group">
+                    <input type="search" name="search" id="search" placeholder="What are you looking for?">
+                    <button type="submit" class="submit"><i class="icon-search-1"></i></button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container">
+          <!-- Navbar Brand -->
+          <div class="navbar-header d-flex align-items-center justify-content-between">
+            <!-- Navbar Brand --><a href="/" class="navbar-brand"><span class="text-success">S</span><span class="text-danger">D</span> <span class="text-warning">B</span>log</a>
+            <!-- Toggle Button-->
+            <button type="button" data-toggle="collapse" data-target="#navbarcollapse" aria-controls="navbarcollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"><span></span><span></span><span></span></button>
+          </div>
+          <!-- Navbar Menu -->
+          <div id="navbarcollapse" class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item"><a href="/" class="nav-link active ">(New)Home</a>
+              </li>
+              <li class="nav-item"><a href="{% url 'blog' %}" class="nav-link ">Blog</a>
+              </li>
+              
+              <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
+              </li>
+              {% if user.is_superuser  %}
+                    <li class="nav-item " ><a class="btn btn-info" href="{% url 'createPost' %}" class="nav-link ">Create</a>
+                    </li>
+              {% endif %}
+              <li class="nav-item"> 
+               {% if user.is_authenticated %}
+          <div class="dropdown ml-2">
+            <button class="btn btn-info dropdown-toggle" type="button" id="logout" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Welcome {{request.user}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="logout">
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+          </div>
+          {% else %}
+          <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#signup">
+            Sign Up
+          </button>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#login">
+            Log In
+          </button>
+          {% endif %}
+            </ul>
+        
+          </div>
+        </div>
+
+
+      <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Login Here</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body mt-5">
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="loginusername">Username</label>
+                <input type="text" class="form-control" id="loginusername" name="loginusername"
+                  placeholder="Enter username">
+              </div>
+
+              <div class="form-group">
+                <label for="loginpassword">Password</label>
+                <input type="Password" class="form-control" id="loginpassword" name="loginpassword"
+                  placeholder="Enter password">
+              </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">LogIn</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+  
+
+    <div class="modal fade mt-5" id="signup" tabindex="-1" role="dialog" aria-labelledby="signupLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sign Up Form</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/handleSignup" method="POST">
+              {% csrf_token %}
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="choose user name">
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+              </div>
+
+              <div class="form-group">
+                <label for="firstname">Firstname</label>
+                <input type="text" class="form-control" id="firstname" name="firstname"
+                  placeholder="Enter Your Firstname">
+              </div>
+
+              <div class="form-group">
+                <label for="lastname">Lastname</label>
+                <input type="text" class="form-control" id="lastname" name="lastname" placeholder="Enter Your Lastname">
+              </div>
+
+              <div class="form-group">
+                <label for="pass1">Password</label>
+                <input type="Password" class="form-control" id="pass1" name="pass1" placeholder="create your password">
+              </div>
+
+              <div class="form-group">
+                <label for="pass2">Conform Password</label>
+                <input type="Password" class="form-control" id="pass2" name="pass2" placeholder="conform your password">
+              </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </div>
+          </form>
+      </div>
+    </div>
+
+      </nav>
+
+    </header>
+
+
+
